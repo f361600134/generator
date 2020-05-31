@@ -1,0 +1,224 @@
+syntax = "proto3"; // proto3 必须加此注解
+package Protocol;
+option optimize_for = LITE_RUNTIME;
+option java_package = "com.kepe.dragon.data.proto";
+option java_outer_classname = "PBHero";
+option java_multiple_files = true;
+
+//英雄简要信息
+message HeroInfo{
+	int64 heroId=1;      //英雄唯一ID
+	int32 configId=2;    //英雄配置ID
+	int32 level=3;    	 //英雄等级
+	int32 star=4;        //英雄星级
+	int32 power=5;       //英雄战力
+	repeated int32 matrix=6;	     //上阵阵法类型列表
+}
+
+//请求英雄界面信息
+message ReqHeroPanel{
+}
+//响应英雄界面信息
+message AckHeroPanel{
+	int32 maxNum = 1;		//英雄位置数量上限
+	int32 number= 2;		//拥有英雄数量
+	repeated HeroInfo heros = 3;		//英雄简要信息列表
+}
+
+//请求英雄详细信息
+message ReqHeroDetails{
+	int64 heroId=1;      //英雄唯一ID
+}
+
+//英雄属性类型与值
+message AttrTypeAndValue{
+	int32 type = 1;		//英雄属性类型
+	int32 value= 2;		//英雄属性值
+}
+//符文ID与位置
+message RuneIdAndPosition{
+	int64 runeId = 1;		//符文ID
+	int32 position= 2;		//符文装备位置1-2
+	int32 configId=3;    	//符文配置ID
+}
+//响应英雄详细信息
+message AckHeroDetails{
+	int64 heroId=1;      //英雄唯一ID
+	int32 configId=2;    //英雄配置ID
+	int32 level=3;    	 //英雄等级
+	int32 star=4;        //英雄星级
+	int32 power=5;       //英雄战力
+	int32 step=6;        //英雄进阶
+	repeated AttrTypeAndValue attrs = 7;		//英雄属性列表
+	repeated int32 equipConfigIds=8;            //装备列表
+	repeated RuneIdAndPosition runes=9;         //符文列表
+	repeated int32 taskIds=10;            		//已完成星阶任务ID列表
+}
+
+//请求英雄升级
+message ReqHeroUpLevel{
+	int64 heroId=1;      //英雄唯一ID
+}
+//响应英雄升级
+message AckHeroUpLevel{
+	int32 code=1;      //响应状态0为成功1为失败
+}
+//请求英雄升星
+message ReqHeroUpStar{
+	int64 heroId=1;      		   //英雄唯一ID
+	repeated int64 heroIds=2;      //消耗材料英雄唯一ID列表
+}
+//响应英雄升星
+message AckHeroUpStar{
+	int32 code=1;      //响应状态0为成功1为失败
+}
+//请求提交英雄升星星阶任务
+message ReqHeroUpStarTask{
+	int64 heroId=1;      		   //英雄唯一ID
+	repeated int64 heroIds=2;      //消耗材料英雄唯一ID列表
+	int32 taskId=3;                //星阶任务ID
+}
+//响应提交英雄升星星阶任务
+message AckHeroUpStarTask{
+	int32 code=1;      //响应状态0为成功1为失败
+}
+//请求英雄升阶
+message ReqHeroUpStep{
+	int64 heroId=1;      //英雄唯一ID
+}
+//响应英雄升阶
+message AckHeroUpStep{
+	int32 code=1;      //响应状态0为成功1为失败
+}
+//请求购买英雄位置上限
+message ReqHeroAddCeil{
+}
+//响应购买英雄位置上限
+message AckHeroAddCeil{
+	int32 code=1;      	 //响应状态0为成功1为失败
+	int32 maxNum=2;      //英雄位置数量上限
+}
+//请求英雄融合
+message ReqHeroMerge{
+	int32 configId=1;    		   //合成英雄配置ID
+	int64 heroId = 2;	    	   //主英雄ID
+	repeated int64 heroIds=3;      //合成材料英雄唯一ID列表
+}
+//响应英雄融合
+message AckHeroMerge{
+	int32 code=1;      //响应状态0为成功1为失败
+}
+//请求英雄献祭
+message ReqHeroSacrifice{
+	repeated int64 heroId=1;      //献祭英雄唯一ID列表
+}
+//响应英雄献祭
+message AckHeroSacrifice{
+	int32 code=1;      			  //响应状态0为成功1为失败
+}
+//请求英雄置换
+message ReqHeroReplace{
+	int64 heroId = 1;			  //置换英雄ID
+	int32 configId = 2;			  //置换目标英雄配置ID
+	repeated int64 heroIds=3;     //置换材料英雄唯一ID列表
+}
+//响应英雄置换
+message AckHeroReplace{
+	int32 code=1;      			  //响应状态0为成功1为失败
+}
+//请求英雄回退
+message ReqHeroBack{
+	int64 heroId = 1;			  //回退英雄ID
+}
+//响应英雄回退
+message AckHeroBack{
+	int32 code=1;      			  //响应状态0为成功1为失败
+}
+
+//请求阵法信息
+message ReqMatrixInfo{
+	int32 type=1;      //阵法类型0主线1竞技场2冠军赛3天梯赛4段位赛常规
+}
+//英雄ID与阵法位置
+message HeroIdAndPosition{
+	int64 heroId = 1;		//英雄ID
+	int32 position= 2;		//英雄阵法位置
+}
+//响应阵法信息
+message AckMatrixInfo{
+	int32 type=1;         	//阵法类型0主线1竞技场2冠军赛3天梯赛4段位赛常规
+	int32 matrixId=2;   	//当前阵法配置ID
+	int32 artifactId=3;   	//当前神器配置ID
+	repeated HeroIdAndPosition heroPosition = 4;		//英雄阵法位置列表
+}
+//请求保存阵法
+message ReqMatrixSave{
+	int32 type=1;      	 	//阵法类型0主线1竞技场2冠军赛3天梯赛4段位赛常规
+	int32 matrixId=2;   	//当前阵法配置ID
+	int32 artifactId=3;   	//当前神器配置ID
+	repeated HeroIdAndPosition heroPosition = 4;		//英雄阵法位置列表
+}
+//响应保存阵法
+message AckMatrixSave{
+	int32 code=1;      			  //响应状态0为成功1为失败
+}
+
+//请求穿戴装备
+message ReqHeroEquip{
+	int64 heroId = 1;		//英雄ID
+	int32 configId = 2;		//装备配置ID
+}
+//响应穿戴装备
+message AckHeroEquip{
+	int32 code=1;      			  //响应状态0为成功1为失败
+}
+//请求卸下装备
+message ReqHeroUnEquip{
+	int64 heroId = 1;		//英雄ID
+	int32 configId = 2;		//装备配置ID
+}
+//响应卸下装备
+message AckHeroUnEquip{
+	int32 code=1;      			  //响应状态0为成功1为失败
+}
+//请求一键穿戴或卸下
+message ReqHeroAutoEquip{
+	int64 heroId = 1;		//英雄ID
+	int32 type = 2;		    //1为一键穿戴2为一键卸下
+}
+//响应一键穿戴或卸下
+message AckHeroAutoEquip{
+	int32 code=1;      		//响应状态0为成功1为失败
+}
+
+//请求穿戴符文
+message ReqHeroRune{
+	int64 heroId = 1;		//英雄ID
+	int64 runeId = 2;		//符文ID
+	int32 position = 3;		//符文装备位置1-2
+}
+//响应穿戴符文
+message AckHeroRune{
+	int32 code=1;      			  //响应状态0为成功1为失败
+}
+//请求卸下符文
+message ReqHeroUnRune{
+	int64 heroId = 1;		//英雄ID
+	int64 runeId = 2;		//符文ID
+}
+//响应卸下符文
+message AckHeroUnRune{
+	int32 code=1;      			  //响应状态0为成功1为失败
+}
+//请求符文重铸
+message ReqRuneRecast{
+	int32 type=1;      		//请求类型0为查询1重铸2为保存
+	int64 runeId = 2;		//符文ID
+}
+//响应符文重铸
+message AckRuneRecast{
+	int32 type=1;      						//请求类型0为查询1为重铸2为保存
+	int32 code=2;      			  			//响应状态0为成功1为失败
+	repeated AttrTypeAndValue attrs = 3;	//属性列表
+	repeated int32 skills=4;        		//技能列表
+}

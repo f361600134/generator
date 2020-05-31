@@ -1,0 +1,115 @@
+syntax = "proto3"; // proto3 必须加此注解
+package Protocol;
+option optimize_for = LITE_RUNTIME;
+option java_package = "com.kepe.dragon.data.proto";
+option java_outer_classname = "PBArena";
+option java_multiple_files = true;
+
+import "PBBag.proto";
+
+
+/////////////////////竞技场//////////////////////
+//玩家列表
+message ArenaInfo{
+	int64 playerId = 1;			//玩家id
+	int32 level = 2;			//等级
+	int32 headImageId = 3;			//头像id
+	string name = 4;			//昵称
+	int32 integral = 5;			//积分
+	int32 fc = 6;				//战力
+	int32 freeTimes = 7;			//免费次数
+	int32 likeTimes = 8;			//被膜拜次数
+}
+//竞技场记录
+message ArenaLogInfo{
+	int64 otherPlayerId = 1;		//其他玩家id
+	string otherName = 2;			//其他玩家昵称
+	int32 otherHeadImageId = 3;		//其他玩家头像id
+	int32 changeIntegral = 4;		//积分变化
+	int32 time = 5;				//时间
+	int32 type = 6;				//类型(1=进攻成功,2=进攻失败,3=防守成功,4=防守失败)
+	int64 videoId = 7;			//录像id
+}
+
+
+//请求竞技场页面
+message ReqArenaPage{
+
+}
+
+//返回竞技场页面
+message AckArenaPage{
+	int32 rank = 1;				//个人排名
+	int32 integral  = 2;			//个人积分
+	repeated ArenaInfo info = 3;		//玩家列表
+	int32 lastTimes = 4;			//赛季剩余时间
+}
+
+//请求挑战记录
+message ReqArenaLog{
+
+}
+
+//返回挑战记录
+message AckArenaLog{
+	repeated ArenaLogInfo log = 1;		//挑战列表
+}
+
+//请求竞技场战斗
+message ReqArenaBattle{
+	int64 otherPlayerId = 1;		//其他玩家id
+}
+
+//返回竞技场战斗
+message AckArenaBattle{
+	int32 code = 1;				//错误码(挑战成功推送AckArenaPage)
+	int32 integral = 2;			//个人积分
+	int32 changeIntegral = 3;		//个人积分变动
+	int32 otherLevel = 4;			//被挑战等级
+	int32 otherHeadImage = 5;		//被挑战头像
+	string otherName = 6;			//被挑战昵称
+	int32 otherIntegral = 7	;		//被挑战积分
+	int32 otherChangeIntegral = 8;		//被挑战积分变动
+	repeated ItemInfo rewards = 9;		//奖励列表
+}
+
+//请求竞技场刷新
+message ReqArenaRefresh{
+	
+}
+
+//返回竞技场刷新
+message AckArenaRefresh{
+	int32 code = 1;				//错误码
+}
+
+//请求挑战次数奖励
+message ReqArenaReward{
+	int32 configId = 1;			//配置id
+}
+
+//返回挑战次数奖励
+message AckqArenaReward{
+	int32 code = 1;				//错误码
+	repeated ItemInfo rewards = 2;		//奖励列表
+}
+
+//请求点赞
+message ReqArenaLike{
+	int64 playerId = 1;			//玩家id
+}
+
+//返回点赞
+message AckArenaLike{
+	int32 code = 1;				//错误码
+}
+
+//请求排行
+message ReqArenaRank{
+	
+}
+
+//返回排行
+message AckArenaRank{
+	repeated ArenaInfo info = 1;		//竞技场排行
+}

@@ -1,0 +1,78 @@
+syntax = "proto3"; // proto3 必须加此注解
+package Protocol;
+option optimize_for = LITE_RUNTIME;
+option java_package = "com.kepe.dragon.data.proto";
+option java_outer_classname = "PBTower";
+option java_multiple_files = true;
+
+import "PBBag.proto";
+
+
+/////////////////////试练塔//////////////////////
+//试练塔排行信息
+message TowerRankInfo{
+	string name = 1;			//玩家昵称
+	int32 floorNum = 2;			//层数
+}
+
+//请求试练塔页面
+message ReqTowerInfo{
+	
+}
+
+//返回试练塔页面
+message AckTowerInfo{
+	int32 floorNum = 1;			//层数
+	int32 lastFreeTime = 2;			//剩余免费挑战次数
+	int32 lastBuyTime = 3;			//剩余购买挑战次数
+	repeated TowerRankInfo rankInfo = 4;	//排行信息(返回前三展示)
+}
+
+
+//请求层数信息
+message ReqFloorInfo{
+	int32 configId = 1;			//层数配置id
+}
+
+//返回层数信息
+message AckFloorInfo{
+	string fastPass = 1;			//最快通关
+	string minPowerPass = 2;		//最低战力通关
+	int64 fastVideoId =3;			//最快通关录像id
+	int64 minPowerVideoId = 4;		//最低战力通关录像id
+	int64 myPassVideoId = 5;		//自己通关录像id
+}
+
+//请求领取通关奖励
+message ReqGetTowerReward{
+	int32 configId = 1;			//层数配置id
+}
+
+//返回领取通关奖励
+message AckGetTowerReward{
+	int32 code = 1;				//错误码
+	repeated ItemInfo rewards = 2;		//奖励列表
+}
+
+//请求挑战boss
+message ReqFightTower{
+ 	
+}
+
+//返回挑战boss
+message AckFightTower{
+ 	int32 code = 1;				//错误码
+	int32 configId = 2;			//当前关卡id
+}
+
+//请求购买挑战次数
+message ReqBuyTowerTimes{
+ 	
+}
+
+//返回购买挑战次数
+message AckBuyTowerTimes{
+ 	int32 code = 1;				//错误码
+	int32 freeTimes = 2;			//剩余免费次数
+	int32 buyTimes = 3;			//剩余可购买次数
+}

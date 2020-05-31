@@ -1,0 +1,75 @@
+syntax = "proto3"; // proto3 必须加此注解
+package Protocol;
+option optimize_for = LITE_RUNTIME;
+option java_package = "com.kepe.dragon.data.proto";
+option java_outer_classname = "PBVoyage";
+option java_multiple_files = true;
+
+import "PBBag.proto";
+
+
+/////////////////////远航//////////////////////
+//远航任务详细信息
+message MissionInfo{
+	int32 configId = 1;			//任务配置id
+	int64 uniqueId = 2;			//任务唯一id
+	int32 receive = 3;			//是否领取(0=没有,1=领取)
+	int32 lastTime = 4;			//剩余完成时间(-1=没有领取,0=完成,其他表示剩余多少秒)
+}
+
+//请求远航任务列表
+message ReqVoyageList{
+
+}
+
+//返回远航任务列表
+message AckVoyageList{
+	int32 freeTimes = 1;			//免费次数
+	repeated MissionInfo mission = 2;	//远航任务
+}
+
+//请求任务中英雄
+message ReqMissionHero{
+
+}
+
+//返回任务中英雄
+message AckMissionHero{
+	repeated int64 heroId = 1;		//英雄唯一id
+}
+
+//请求接受任务
+message ReqAccept{
+	int64 uniqueId = 1;			//任务唯一id
+	repeated int64 heroId = 2;		//英雄唯一id
+}
+
+//返回接受任务
+message AckAccept{
+	int32 code = 1;				//错误码
+	int64 uniqueId = 2;			//任务唯一id
+}
+
+//请求刷新任务列表
+message ReqRefresh{
+	
+}
+
+//返回刷新任务列表
+message AckRefresh{
+	int32 code = 1;				//错误码(0推送AckVoyageList)
+}
+
+//请求完成任务
+message ReqComplete{
+	int64 uniqueId = 1;			//任务唯一id(传0表示一键领取)
+	int32 type = 2;				//操作类型(1=加速,2=领取,3=一键领取)
+}
+
+//返回完成任务
+message AckComplete{
+	int32 code = 1;				//错误码
+	repeated ItemInfo rewards = 2;		//奖励列表
+	repeated int64 uniqueId = 3;		//任务唯一id
+}
+

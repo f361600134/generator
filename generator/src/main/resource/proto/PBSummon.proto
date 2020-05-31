@@ -1,0 +1,63 @@
+syntax = "proto3"; // proto3 必须加此注解
+package Protocol;
+option optimize_for = LITE_RUNTIME;
+option java_package = "com.kepe.dragon.data.proto";
+option java_outer_classname = "PBSummon";
+option java_multiple_files = true;
+
+import "PBBag.proto";
+
+
+/////////////////////召唤//////////////////////
+//请求召唤界面信息
+message ReqSummonInfo{
+
+}
+
+//服务器推送召唤界面信息
+message AckSummonInfo{
+	int32 normaTime = 1;			//普通免费抽取剩余时间(0表示可抽取)
+	int32 advancedTime = 2;			//高级免费抽取剩余时间(0表示可抽取)
+}
+
+//请求召唤
+message ReqDoSummon{
+	int32 summonType = 1;			//召唤类型(1=基础,2=友情,3=高级,4=积分,5=先知,6=天命)
+	int32 count = 2;			//召唤次数
+	int32 camp = 3;				//阵营(先知召唤用到字段,1=风,2=水,3=火,4=光暗,5=星风,6=星水,7=星火,8=星光,9=星暗) 
+}
+
+//返回召唤
+message AckDoSummon{
+	int32 code = 1;				//错误码(0=成功,推送AckSummonInfo)
+	int32 summonType = 2;			//召唤类型(1=基础,2=友情,3=高级,4=积分,5=先知)
+	int32 count = 3;			//召唤次数
+	repeated ItemInfo rewards = 4;		//奖励列表
+	int32 camp = 5;				//阵营
+}
+
+//请求英雄转换界面
+message ReqHeroConvertInfo{
+	
+}
+
+//返回英雄转换界面
+message AckHeroConvertInfo{
+	int64 fromHeroId = 1;			//转换的英雄id(0则不存在)
+	int32 targetHeroId = 2;			//目标的英雄id(0则不存在)
+}
+
+//请求英雄转换
+message ReqHeroConvert{
+	int64 hreoId = 1;			//英雄唯一id
+	int32 type = 2;				//类型(1=请求转换,2=取消转换,3=保存转换)
+}
+
+//返回英雄转换
+message AckHeroConvert{
+	int32 code = 1;				//错误码(0=成功)
+	int32 type = 2;				//类型(1=请求转换,2=取消转换,3=保存转换)
+	int64 fromHeroId = 3;			//转换的英雄id(0则不存在)
+	int32 targetHeroId = 4;			//目标的英雄id(0则不存在)
+}
+

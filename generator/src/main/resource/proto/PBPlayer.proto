@@ -1,0 +1,175 @@
+syntax = "proto3"; // proto3 必须加此注解
+package Protocol;
+option optimize_for = LITE_RUNTIME;
+option java_package = "com.kepe.dragon.data.proto";
+option java_outer_classname = "PBPlayer";
+option java_multiple_files = true;
+
+import "PBBag.proto";
+
+//玩家属性类型与值
+message PlayerAttrTypeAndValue{
+	int32 type = 1;		//玩家属性类型
+	int64 value= 2;		//玩家属性值
+}
+message PlayerInfo{
+	string userName=1;		//游戏唯一账号
+	int64 playerId=2;       //玩家ID
+	string playerName=3;	//玩家名字
+	int32 sex = 4;			//性别
+	int32 level = 5;		//等级
+	int32 power = 6;		//战力
+	int32 vip = 7;			//vip等级
+	int32 skinId=8;			//头像ID
+	int64 serverTime=9;		//服务器时间
+	repeated PlayerAttrTypeAndValue attrs = 10;	//玩家属性
+}
+message PlayerProfile{
+	int64 playerId = 1;			//玩家唯一ID
+	string playerName = 2;		//玩家名字
+	int32 sex = 3;				//性别
+	int32 level = 4;			//等级
+	int32 power = 5;			//战力
+	int32 vip = 6;				//vip等级
+	int32 skinId = 7;			//头像ID
+	int32 canGift = 8;			//是否可以赠送礼物(0=可以,1=不可以)
+	int32 prevOfflineTime =9;	//离线时间(0=在线)
+}
+//响应进入主界面初始化玩家信息
+message AckInitPlayerInfo{
+    PlayerInfo playerInfo = 1;
+}
+
+//响应玩家属性更新信息
+message AckUpdatePlayerAttrs{
+    repeated PlayerAttrTypeAndValue attrs = 1;	//玩家属性
+}
+
+message EmailInfo{
+	int64 id = 1;							//邮件ID
+	string emailTitle = 2;					//标题
+	string content = 3;						//内容
+	string beginTime = 4;					//发送时间
+	string endTime = 5;						//有效期
+	repeated ItemInfo rewardList = 6;	//奖励
+	int32 state = 7;						//0:未读;1:已读;2:已领取
+}
+
+//请求邮件列表
+message ReqEmailList{
+	
+}
+//返回邮件列表
+message AckEmailList{
+	repeated EmailInfo emails = 1;			//邮件列表
+}
+//请求阅读邮件
+message ReqReadEmail{
+	
+	int64 id = 1;								//邮件ID
+
+}
+//返回阅读邮件
+message AckReadEmail{
+	int32 code = 1;								//错误码
+	int64 id = 2;								//阅读邮件的ID
+
+}
+//请求领取邮件
+message ReqReceiveEmail{
+	int64 id = 1;								//邮件ID。-1为一键领取
+}
+//返回领取邮件
+message AckReceiveEmail{
+	int32 code = 1;								//错误码
+	
+}
+//更新邮件信息
+message AckUpdateEmail{
+	repeated EmailInfo emails = 1;			//邮件列表 
+}
+//请求删除邮件
+message ReqDeleteEmail{
+	int64 id = 1;								//邮件ID，-1为一键删除
+}
+//返回删除邮件
+message AckDeleteEmail{
+	int32 code = 1;								//错误码
+	repeated int64 deletes = 2;					//删除的邮件ID
+}
+
+
+//请求好友列表
+message ReqFriendList{
+	int32 type = 1;					//类型(1=好友,2=礼物,3=申请,4=黑名单)
+}
+//返回好友列表
+message AckFriendList{
+	repeated PlayerProfile friendList = 1;		//好友列表
+	
+}
+//请求操作好友
+message ReqOperationFriend{
+	int64 playerId = 1;				//玩家id
+	int32 operation = 2;				//操作(1=添加,2=删除,3=黑名单,4=同意,5=拒绝,6=从黑名单移除)
+}
+//返回操作好友
+message AckOperationFriend{
+	int32 code = 1;					//错误码(0推送好友列表)
+}
+//请求操作礼物
+message ReqGift{
+	int64 playerId = 1;				//玩家id
+	int32 operation = 2;				//操作(1=领取,2=赠送,playerId传0表示一键领取或赠送)
+}
+//请求返回礼物
+message AckGift{
+	int32 code = 1;					//错误码
+}
+//请求随机在线玩家列表
+message ReqRandomOLPlayerList{
+	string playerName = 1;				//玩家名称(传值为精确查询)
+}
+//返回随机在线玩家列表
+message AckRandomOLPlayerList{
+	int32 code = 1;					//错误码
+	repeated PlayerProfile playerList = 2;		//在线玩家列表
+}
+//推送列表中的好友信息有改动
+message AckUpdateFriend{
+	repeated PlayerProfile friendList = 1;		//更新的好友信息
+}
+//推送删除列表中的好友
+message AckDeleteFriend{
+	repeated int64 playerId = 1;							//删除的好友ID
+	
+}
+
+//////////////通用错误码提示///////////
+//tips信息
+message AckTips{
+    int32 tipsId=1;		//错误码
+    repeated string params=2;//携带参数客户端组装
+}
+
+///////////////聊天///////////////////
+//聊天内容
+message ChatInfo{
+	string content = 1;					//输入的聊天信息
+	PlayerProfile playerInfo = 2;		//发送者信息
+	PlayerProfile recPlayerInfo = 3;	//接受者信息(私聊使用)
+}
+
+//请求聊天
+message ReqChat{
+	int32 chatChannel = 1;		//聊天频道
+	int64 playerId = 2;			//私聊ID
+	string content = 3;			//输入的聊天信息WW
+}
+
+//第一次进入游戏时,推送缓存聊天内容
+//有新的聊天时,推送新的聊天列表
+message AckChat{
+	int32 chatChannel = 1;		//频道： 1=同省；2=跨服；3=世界；4=工会；5=私聊；6=系统
+    repeated ChatInfo chats = 2;//聊天内容
+}

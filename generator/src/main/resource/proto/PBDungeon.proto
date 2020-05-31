@@ -1,0 +1,67 @@
+syntax = "proto3"; // proto3 必须加此注解
+package Protocol;
+option optimize_for = LITE_RUNTIME;
+option java_package = "com.kepe.dragon.data.proto";
+option java_outer_classname = "PBDungeon";
+option java_multiple_files = true;
+
+import "PBBag.proto";
+
+//请求主线副本信息
+message ReqDungeonInfo{
+ 
+}
+
+//返回主线副本信息
+message AckuDungeonInfo{
+   int64 produceTime = 1; //挂机开始时间
+   int32 fastWarCount = 2;//快速作战次数
+   int32 configId = 3;	//当前关卡id
+}
+
+
+//请求主线副本快速战斗
+message ReqDungeonFastwar{
+ 
+}
+
+//返回主线副本快速战斗
+message AckDungeonFastwar{
+	int32 code = 1; //错误码
+	int32 hookTime = 2;//x小时收益
+	repeated ItemInfo rewards = 3; //奖励列表
+}
+
+//领取挂机收益
+message ReqDungeonHookReward{
+ 	
+}
+
+//返回挂机收益
+message AckDungeonHookReward{
+ 	int32 code = 1; //错误码
+ 	int32 hookTime = 2;//挂机时长
+	repeated ItemInfo rewards = 3; //奖励列表
+}
+
+//前往下一章节
+message ReqMoveToNextChapter{
+ 	
+}
+
+//返回下一章节
+message AckMoveToNextChapter{
+	int32 code = 1; //错误码
+}
+
+//请求挑战boss
+message ReqFightBoss{
+ 	
+}
+
+//返回挑战boss
+message AckFightBoss{
+ 	int32 code = 1; //错误码
+	int32 configId = 3;	//当前关卡id
+}
+

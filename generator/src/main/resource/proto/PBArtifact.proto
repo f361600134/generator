@@ -1,0 +1,68 @@
+syntax = "proto3"; // proto3 必须加此注解
+package Protocol;
+option optimize_for = LITE_RUNTIME;
+option java_package = "com.kepe.dragon.data.proto";
+option java_outer_classname = "PBArtifact";
+option java_multiple_files = true;
+
+//神器信息
+message PBArtifactInfo{
+     int32 configId = 1;//神兵配置id
+     int32 level = 2; //普通等级
+     int32 exp = 3; //经验
+     int32 refineLv = 4; //精炼等级
+     int32 skillLv = 5;//技能等级
+     int32 state = 6;//状态0:未激活,1:已激活
+     repeated PBArtifactMissionInfo missions = 7;//神器任务信息
+     int32 skinId = 8; //皮肤id
+	 int32 holySealLv = 9;//圣印等级
+}
+
+//神器任务信息
+message PBArtifactMissionInfo{
+	int32 configId = 1;	//神将任务配置id
+	int32 progress = 2;	//当前任务进度
+	int32 state = 3; //状态,是否完成,0:未完成，1：已完成未领取，2：已完成已领取
+}
+
+//请求神器信息
+message ReqArtifactList{
+}
+
+//返回神器信息
+message AckArtifactList{
+  repeated PBArtifactInfo artifactlist = 1; //神兵列表
+}
+
+//请求神器操作
+message ReqArtifactOpt{
+     int32 configId = 1;//神兵配置id
+     int32 optType = 2; //1:升级,2:精炼,3:技能升级,4:重铸
+}
+
+//返回神器操作
+message AckArtifactOpt{
+     int32 configId = 1;//神兵配置id
+     int32 optType = 2; //1:升级,2:精炼,3:技能升级,4:重铸
+     int32 code = 3;//错误码
+}
+//请求领取神器任务
+message ReqArtifactReceiveTask{
+	int32 configId = 1;		//神器配置ID
+	int32 taskId = 2;		//任务配置ID
+}
+//返回领取神器任务
+message AckArtifactReceiveTask{
+	int32 code = 1;			//错误码
+	
+}
+//请求圣印
+message ReqArtifactHolySeal{
+	int32 configId = 1;				//配置ID
+	int32 num = 2;					//数量
+}
+//返回圣印
+message AckArtifactHolySeal{
+	int32 code = 1;					//错误码
+}
+

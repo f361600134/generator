@@ -1,0 +1,50 @@
+syntax = "proto3"; // proto3 必须加此注解
+package Protocol;
+option optimize_for = LITE_RUNTIME;
+option java_package = "com.kepe.dragon.data.proto";
+option java_outer_classname = "PBForge";
+option java_multiple_files = true;
+
+import "PBBag.proto";
+
+//请求合成符文
+message ReqRuneCompose{
+	repeated int64 runeId = 1;		//符文ID列表
+}
+//响应合成符文
+message AckRuneCompose{
+	int32 code=1;      			  //响应状态0为成功1为失败
+}
+//请求合成装备
+message ReqEquipCompose{
+	int32 equipParam = 1;		//普通合成（装备Id  一键合成（合成装备类型）
+	int32 composeNum = 2;			//普通合成数量
+	int32 composeType = 3;          //合成  一键合成（合成装备类型）
+}
+//响应合成装备
+message AckEquipCompose{
+	int32 code=1;      			  //响应状态0为成功1为失败
+}
+
+//请求查看合成记录
+message ReqComposeRecord{
+}
+//响应查看合成记录
+message AckComposeRecord{
+	int32 code=1;      			  //响应状态0为成功1为失败
+	repeated RecordEquipCompose records=2;  //合成记录列表
+}
+//领取熔炼值符文
+message ReqGetSmeltRune{
+}
+//响应领取熔炼值符文
+message AckGetSmeltRune{
+	int32 code=1;      			  //响应状态0为成功1为失败
+}
+message RecordEquipCompose{
+	repeated ItemInfo items=1;		//合成装备列表
+	int32 costCopper=2;			//消耗金币
+	int64 recordTime=3;		//合成时间
+}
+
+

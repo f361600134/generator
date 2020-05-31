@@ -1,0 +1,68 @@
+syntax = "proto3"; // proto3 必须加此注解
+package Protocol;
+option optimize_for = LITE_RUNTIME;
+option java_package = "com.kepe.dragon.data.proto";
+option java_outer_classname = "PBLuckyTreasure";
+option java_multiple_files = true;
+
+import "PBBag.proto";
+
+
+/////////////////////幸运探宝//////////////////////
+//探宝奖励
+message TreasureInfo{
+	int32 place = 1;			//位置
+	int64 configId = 2;			//配置id
+	int32 receive = 3;			//是否抽取(0=没有,1=领取)
+}
+//探宝记录
+message TreasureLog{
+	string name = 1;			//名字
+	string reward = 2;			//奖励
+}
+
+
+//请求幸运探宝页面
+message ReqLuckyTreasurePage{
+	int32 type = 1;				//类型(1=幸运,2=高级)
+}
+//返回幸运探宝页面
+message AckLuckyTreasurePage{
+	int32 luckyValue = 1;			//幸运值
+	int32 nextTime = 2;			//剩余免费刷新时间
+	repeated TreasureLog treasureLog = 3;	//探宝记录
+	repeated TreasureInfo treasureInfo = 4;	//探宝奖励
+	repeated int32  luckValueReward = 5;	//已经领取的幸运值奖励
+	int32 type = 6;				//类型(1=幸运,2=高级)
+}
+//请求抽奖
+message ReqExtract{
+	int32 type = 1;				//类型(1=幸运,2=高级)
+	int32 times = 2;			//抽奖次数
+}
+//返回抽奖
+message AckExtract{
+	int32 code = 1;				//错误码
+	int32 place = 2;			//位置
+	repeated ItemInfo rewards = 3;		//奖励列表
+	int32 luckyValue = 4;			//幸运值
+	repeated TreasureLog treasureLog = 5;	//探宝记录
+}
+//请求刷新
+message ReqLuckRefresh{
+	int32 type = 1;				//类型(1=幸运,2=高级)
+}
+//返回刷新
+message AckLuckRefresh{
+	int32 code = 1;				//错误码 
+}
+//请求领取积分奖励
+message ReqIntegralReward{
+	int32 type = 1;				//类型(1=幸运,2=高级)
+	int32 configId = 2;			//配置id
+}
+//返回领取积分奖励
+message AckIntegralReward{
+	int32 code = 1;				//错误码
+	repeated ItemInfo rewards = 2;		//奖励列表
+}

@@ -1,0 +1,59 @@
+syntax = "proto3"; // proto3 必须加此注解
+package Protocol;
+option optimize_for = LITE_RUNTIME;
+option java_package = "com.kepe.dragon.data.proto";
+option java_outer_classname = "PBStarRiver";
+option java_multiple_files = true;
+
+
+/////////////////////星河神殿//////////////////////
+//星河神殿神位信息
+message StarRiverInfo{
+	int32 configId = 1;			//配置id
+	string name = 2;			//昵称
+	int32 playerImageId = 3;		//玩家形象id
+	int32 level = 4;			//玩家等级
+	int32 headImageId = 5;			//头像id
+	int32 evolutionTimes = 6;		//进化次数
+}
+//挑战记录
+message StarRiverLog{
+	string name = 1;			//昵称
+	int32 strengthenNum = 2;		//强化次数
+	int32 time = 3;				//时间
+	int32 power = 4;			//战力
+	string formation = 5;			//阵型
+	int32 videoId = 6;			//录像id
+}
+
+//请求星河神殿页面
+message ReqStarRiverPage{
+	
+}
+
+//返回星河神殿页面
+message AckStarRiverPage{
+	int32 rank = 1;				//竞技场排名
+	repeated StarRiverInfo info = 2;	//神位信息
+}
+
+//请求挑战记录
+message ReqStarRiverLog{
+	int32 configId = 1;			//配置id
+}
+
+//返回挑战记录
+message AckStarRiverLog{
+	repeated StarRiverLog log = 1;		//挑战记录
+}
+
+//请求挑战
+message ReqStarRiverBattle{
+	int32 configId = 1;			//配置id
+	int32 times = 2;			//进化次数
+}
+//请求挑战
+message AckStarRiverBattle{
+	int32 code = 1;				//错误码
+	int32 cd = 2;				//冷却时间
+}

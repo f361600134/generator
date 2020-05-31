@@ -1,0 +1,236 @@
+syntax = "proto3"; // proto3 必须加此注解
+
+package Protocol;
+
+option optimize_for = LITE_RUNTIME;
+option java_package = "com.kepe.dragon.data.proto";
+option java_outer_classname = "PBDefine";
+
+enum PBProtocol {
+	UNIVERSAL = 0;
+	//system
+	
+	//login
+	ReqLogin = 100;
+	AckLogin = 101;
+	ReqRandName = 102;
+	AckRandName = 103;
+	ReqCreateRole = 104;
+	AckCreateRole = 105;
+	ReqPlayer = 106;
+	
+	ReqReLogin = 120;
+	AckReLogin = 121;
+	AckDisconnect = 122;
+	ReqHeart = 123;
+	AckHeart = 124;
+	AckEnterGame = 140;
+	AckUpdatePlayerAttrs = 141;
+	
+	//player
+	ReqInitPlayerInfo = 149;
+	AckInitPlayerInfo = 150;
+	AckUpdatePlayerInfo = 151;
+	AckTips = 182;
+	AckRewards = 183;
+	ReqChat = 184;
+	AckChat = 185;
+
+	//邮件
+	ReqEmailList = 190;
+	AckEmailList = 191;
+	ReqReadEmail = 192;
+	AckReadEmail = 193;
+	ReqDeleteEmail = 194;
+	AckDeleteEmail = 195;
+	ReqReceiveEmail = 196;
+	AckReceiveEmail = 197;
+	AckUpdateEmail = 198;
+	//battle
+	ReqBattlePVE = 200;
+	AckBattle = 201;
+	ReqBattlePVP = 202;
+	ReqBattlePVEEnd = 203;
+	
+	//背包
+	AckBagList = 300;
+	AckUpdateBagList = 301;
+	AckDeleteBagList = 302;
+	ReqOperateItem = 303;
+	AckOperateItem = 304;
+	ReqBuyCount = 305;
+	AckBuyCount = 306;
+
+	
+	//hero
+	ReqHeroPanel=400;
+	AckHeroPanel=401;
+	ReqHeroDetails=402;
+	AckHeroDetails=403;
+	ReqHeroUpLevel=404;
+	AckHeroUpLevel=405;
+	ReqHeroUpStep=406;
+	AckHeroUpStep=407;
+	ReqHeroUpStar=408;
+	AckHeroUpStar=409;
+	ReqHeroAddCeil=410;
+	AckHeroAddCeil=411;
+	ReqHeroMerge=412;
+	AckHeroMerge=413;
+	ReqHeroSacrifice=414;
+	AckHeroSacrifice=415;
+	ReqHeroReplace=416;
+	AckHeroReplace=417;
+	ReqHeroBack=418;
+	AckHeroBack=419;
+	ReqHeroUpStarTask=420;
+	AckHeroUpStarTask=421;
+	
+	
+	ReqMatrixInfo=430;
+	AckMatrixInfo=431;
+	ReqMatrixSave=432;
+	AckMatrixSave=433;
+
+	
+	ReqHeroEquip=450;
+	AckHeroEquip=451;
+	ReqHeroUnEquip=452;
+	AckHeroUnEquip=453;
+	ReqHeroAutoEquip=454;
+	AckHeroAutoEquip=455;
+	
+	ReqHeroRune=460;
+	AckHeroRune=461;
+	ReqHeroUnRune=462;
+	AckHeroUnRune=463;
+	
+	ReqRuneRecast=464;
+	AckRuneRecast=465;
+	
+	//召唤(500~520)
+	ReqSummonInfo=500;
+	AckSummonInfo=501;
+	ReqDoSummon=502;
+	AckDoSummon=503;
+	ReqHeroConvertInfo=504;
+	AckHeroConvertInfo=505;
+	ReqHeroConvert=506;
+	AckHeroConvert=507;
+
+	//好友(521~540)
+	ReqFriendList=521;
+	AckFriendList=522;
+	ReqOperationFriend=523;
+	AckOperationFriend=524;
+	ReqGift=525;
+	AckGift=526;
+	ReqRandomOLPlayerList=527;
+	AckRandomOLPlayerList=528;
+	AckUpdateFriend = 529;
+	AckDeleteFriend = 530;
+
+	//远航(541~560)
+	ReqVoyageList=541;
+	AckVoyageList=542;
+	ReqAccept=543;
+	AckAccept=544;
+	ReqRefresh=545;
+	ReqComplete=546;
+	AckComplete=547;
+	ReqMissionHero=548;
+	AckMissionHero=549;
+	AckRefresh=550;
+	
+	//主线副本(581~600)
+	ReqDungeonInfo = 581;
+	AckuDungeonInfo = 582;
+	ReqDungeonFastwar = 583;
+	AckDungeonFastwar = 584;
+	ReqDungeonHookReward = 585;
+	AckDungeonHookReward = 586;
+	ReqMoveToNextChapter = 587;
+	AckMoveToNextChapter = 588;
+	ReqFightBoss = 589;
+	AckFightBoss = 590;
+
+	//幸运探宝(620~640)
+	ReqLuckyTreasurePage=620;
+	AckLuckyTreasurePage=621;
+	ReqExtract=622;
+	AckExtract=623;
+	ReqLuckRefresh=624;
+	AckLuckRefresh=625;
+	ReqIntegralReward=626;
+	AckIntegralReward=627;
+	
+	//锻造屋(660~670)
+	ReqEquipCompose=661;
+	AckEquipCompose=662;
+	ReqRuneCompose=663;
+	AckRuneCompose=664;
+	ReqComposeRecord=665;
+	AckComposeRecord=666;
+	ReqGetSmeltRune=667;
+	AckGetSmeltRune=668;
+
+	//试练塔(700~720)
+	ReqTowerInfo=700;
+	AckTowerInfo=701;
+	ReqFloorInfo=702;
+	AckFloorInfo=703;
+	ReqGetTowerReward=704;
+	AckGetTowerReward=705;
+	ReqFightTower=706;
+	AckFightTower=707;
+	ReqBuyTowerTimes=708;
+	AckBuyTowerTimes=709;
+
+	//星河神殿(730~750)
+	ReqStarRiverPage=730;
+	AckStarRiverPage=731;
+	ReqStarRiverLog=732;
+	AckStarRiverLog=733;
+	ReqStarRiverBattle=734;
+	AckStarRiverBattle=735;
+	
+	//日常(800~899)
+	ReqDailyTasks=800;
+	AckDailyTasks=801;
+	ReqDailyTaskSubmit=803;
+	AckDailyTaskSubmit=804;
+	ReqDailyTaskActive=805;
+	AckDailyTaskActive=806;
+	
+	//商店(900~920)
+	ReqShopList = 900;
+	AckShopList = 901;
+	ReqBuyItem = 902;
+	AckBuyItem = 903;
+	
+	//神器(930~960)
+	ReqArtifactList = 930;
+	AckArtifactList = 931;
+	ReqArtifactOpt = 932;
+	AckArtifactOpt = 933;
+	ReqReceiveTask = 934;
+	AckReceiveTask = 935;
+	ReqHolySeal = 936;
+	AckHolySeal = 937;
+
+	//竞技场(980~1000)
+	ReqArenaPage=980;
+	AckArenaPage=981;
+	ReqArenaLog=982;
+	AckArenaLog=983;
+	ReqArenaBattle=984;
+	AckArenaBattle=985;
+	ReqArenaRefresh=986;
+	AckArenaRefresh=987;
+	ReqArenaReward=988;
+	AckqArenaReward=989;
+	ReqArenaLike=990;
+	AckArenaLike=991;
+	ReqArenaRank=992;
+	AckArenaRank=993;
+}

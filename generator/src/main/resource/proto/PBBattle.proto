@@ -1,0 +1,156 @@
+syntax = "proto3"; // proto3 必须加此注解
+package Protocol;
+option optimize_for = LITE_RUNTIME;
+option java_package = "com.kepe.dragon.data.proto";
+option java_outer_classname = "PBBattle";
+option java_multiple_files = true;
+
+import "PBBag.proto";
+
+//请求PVE战斗
+message ReqBattlePVE{
+	int32 battleType=1;		//战斗类型
+	int32 battleParam=2;	//每个战斗类型所需参数
+}
+//请求PVP战斗
+message ReqBattlePVP{
+	int64 defenderId=1;		//敌方玩家Id
+}
+//响应战斗结果
+message AckBattle{
+	int32 reportType = 1;				//战报类型
+	AckBattleReport battleReport=2;		//战斗结果
+	BattleReportVO battleReportVO=3;	//战报
+}
+//战斗结果
+message AckBattleReport{
+	repeated ItemInfo itemList=1;	//获得物品信息
+	string attackerName=2;   // 攻击者名称
+	string defenderName=3;	// 防御者名称
+	int32 winner=4;  		//相对于攻击方战斗结果0失败1胜利 
+	repeated BattlerInfo attacker=7;  //攻击者
+	repeated BattlerInfo defender=6;  //防御者
+}
+//各个英雄的战斗数值
+message BattlerInfo{
+	int64 damage=1;			//伤害
+	int64 sufferDamage=2;   //承受伤害
+	int64 treatment=3;		//治疗
+	bool isMvp=4;			//是否mvp
+}
+//请求战斗结果
+message ReqBattlePVEEnd{
+	int32 battleType=1;		//战斗类型
+	int64 battleReportId=2;	//战报Id
+}
+//战报
+message BattleReportVO{		
+	int64 id=1;			// 战报ID
+	int32 time=2; 		 //战报时间戳s
+	int64 attackerId=3;  	//攻击者ID
+	int64 defenderId=4;   //防御者Id
+	string attackerName=5;   // 攻击者名称
+	string defenderName=6;	// 防御者名称
+	int32 winner=7;  		//相对于攻击方战斗结果0失败1胜利 
+	int32 arenaOrder=8;  	//竞技场争夺排名
+	repeated BattlerVO attacker=9;  //攻击者
+	repeated BattlerVO defender=10;  //防御者
+	repeated BattleFrameVO battleFrames=11;  //战斗帧动作
+	int32 roundNum=12;  //回合数
+}
+message BattlerVO{		
+	int64 battlerId=1;      //战斗者ID
+	string battlerName=2;  //战斗者名称
+	int32 battleType=3;    //1为主战斗者0为辅战斗者
+	int32 type=4;  		  //战斗者场景类型1主角2侠客3普通NPC4怪物5异兽
+	int32 quality=5;      //战斗者品质
+	int32 battlePosition=6;  //战斗九宫格位置1-9
+	int64 blood = 7;  		//血量=血量上限
+	int64 bloodLimit = 8;   //血量=血量上限
+	int32 skinId=9;   		//皮肤ID
+	int32 attackType=10;   //攻击类型1普攻近战2普攻远程
+	int32 level=11;      	//等级 
+	int32 godImgId=12;  		//神兵图片ID
+	int32 godType=13;	//效果级别1六级2一一级3一六级
+	repeated string skillNames=14;
+}
+
+message BattleFrameVO{		// 战斗帧
+	int32 battleSeq=1;		//战斗小队序列号
+	int32 round=2;		//战斗回合号 
+	repeated BattleFrameObjectVO attacker=3;		//攻击方 
+	repeated BattleFrameObjectVO defenders = 4; // 防御方
+	repeated BattleBuffVO buffs =5;		//BUFF集合 
+	repeated SkillVO attackSkills =6;		//发起的攻击技能
+	BattleOffensiveEnum offensiveEnum=7;		//攻防类型
+	int32 slideshowFrame=8;		//连续播放帧数
+	BattleFrameVO prevFrameVO=9;	//攻击动作前buff生效帧
+	repeated BattleFrameVO nextFrameVO=10;		//复活帧
+	bool reAction=11;		//再次行动
+}
+
+message BattleFrameObjectVO{//战斗帧目标对象
+	int64 targetId=1;		//目标ID 
+	SceneObjectTypeEnum targetType=2;	//目标类型(对应SceneObjectTypeEnum)
+	int64 blood=3;		//血量
+	int64 bloodLimit=4;		//血量上限
+	int64 bloodLost=5;		//掉血量
+	bool lost=6;		//是否挂掉0否1是
+	int32 position=7;		//站位，从1-9，共9个位置,0为异兽位置
+	int32 attackPath=8;		//攻击路径: 0攻击方1闪避2暴击3格挡4静态BUFF5治疗；详细依据BattleAttackPath定义
+	int32 job=9;		//职业类型1剑2刀3拳 
+}
+
+message BattleBuffVO{
+	int64 skillId=1;		//BUFF技能唯一ID
+	int64 targetId=2;		//目标ID 
+	int32 targetType=3;		// 目标类型(对应RPGObjectTypeEnum)
+	int32 buffModelId=4;	//BUFF模型ID
+	string buffName=5;		//BUFF名称
+	int32 buffType=6;		//模型类型 1:血包, 2:经验, 3:战斗;
+	int32 buffAddType=7;		//BUFF加成类型
+	int32 endTime=8;		//魔法剩余时间, 只限血包/经验类型有效
+	int32 remainRoundNum=9;		//魔法剩余回合数, 只限战斗类型有效 
+	int32 type=10;				//处理类型: 0,新增; 1,修改; 2,删除
+	int32 expressType=11;		//表达类型:1,图标;2,特效;4,两者
+	int32 statusAffectId=12;		//BUFF特效ID
+	string effectId=13;			// 特效ID:前层ID,后层ID
+	int32 iconId=14;			//图标 
+	string tips=15;				//Tips信息 
+	string position=16;			// 特效位置信息
+	bool roleTransparent=17;			// 角色是否透明 
+}
+
+message SkillVO{		//技能信息
+	int32 skillModelId=1;		//技能模型ID
+	int32 level=2;		//技能等级
+	string modelName=3;		//技能名称
+	string desc=4;		//技能描述
+	int32 displayEffect=5;		//施展特效编号
+	int32 flyEffect=6;		//飞行特效编号
+	int32 hitEffect=7;			//命中特效编号
+	int32 attackType=8;		//技能释放位置1技能近战 2技能远程
+	int32 actionId=9;			//动作编号
+}
+
+enum BattleOffensiveEnum{
+	BATTLEOFFENSIVE = 0;
+	//system
+	
+	Attacker=1;
+	Defender=2;
+}
+
+enum SceneObjectTypeEnum{
+	SCENEOBJECT = 0;
+	//system
+	
+	STATIC_OBJ=1;	//静态物体
+	PLAYER=2;		//玩家
+	PET=3;		//宠物
+	MONSTER=4;	// 怪物，攻击性NPC
+	NPC=5;			//普通NPC
+	TELEPORT=6;			//传送点
+	BEAST=7;		//异兽
+}
+

@@ -1,0 +1,48 @@
+syntax = "proto3"; // proto3 必须加此注解
+package Protocol;
+option optimize_for = LITE_RUNTIME;
+option java_package = "com.kepe.dragon.data.proto";
+option java_outer_classname = "PBDaily";
+option java_multiple_files = true;
+
+//活跃度信息
+message ActiveInfo{
+	int32 active = 1;				//活跃度值
+	repeated int32 receivedList= 2;		//已领取奖励ID列表
+}
+//任务信息
+message TaskInfo{
+	int32 taskId = 1;				//任务ID
+	int32 value = 2;				//任务条件完成度
+	int32 status = 3;				//任务状态0未完成1已完成
+}
+//请求日常面板信息
+message ReqDailyTasks{
+}
+//响应日常面板信息
+message AckDailyTasks{
+	ActiveInfo activeDay = 1;		//日活跃度信息
+	ActiveInfo activeWeek = 2;		//周活跃度信息
+	repeated TaskInfo taskDay=3;    //日常任务信息
+	repeated TaskInfo taskWeek=4;   //周常任务信息
+	repeated TaskInfo taskMain=5;   //主线任务信息
+	repeated TaskInfo taskSpecial=6;//进阶历练任务信息
+}
+//请求任务提交
+message ReqDailyTaskSubmit{
+	int32 taskId = 1;				//任务ID
+}
+//响应任务提交
+message AckDailyTaskSubmit{
+	int32 code=1;      //响应状态0为成功1为失败
+}
+//请求活跃度奖励领取
+message ReqDailyTaskActive{
+	int32 type = 1;				//类型1日常2周常
+	int32 activeId = 2;			//活跃度奖励ID
+}
+//响应活跃度奖励领取
+message AckDailyTaskActive{
+	int32 code=1;      //响应状态0为成功1为失败
+}
+

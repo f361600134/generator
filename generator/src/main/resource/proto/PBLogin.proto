@@ -1,0 +1,73 @@
+syntax = "proto3"; // proto3 必须加此注解
+package Protocol;
+option optimize_for = LITE_RUNTIME;
+option java_package = "com.kepe.dragon.data.proto";
+option java_outer_classname = "PBLogin";
+option java_multiple_files = true;
+
+//请求连接游戏服
+message ReqLogin{
+    string userName=1;		//游戏唯一账号
+	int32 channel = 2;		//渠道
+	string sessionKey=3;	//密匙
+	int32 serverId = 4;		//游戏服id
+	string version = 5;		//版本号
+	int32 loginSid = 6;		//登录服id
+	string device = 7;		//设备码
+}
+//响应连接游戏服结果
+message AckLogin{
+    int32 code = 1;
+	int32 status = 2;	//是否进入创建角色环节, 0=否,1=是
+}
+
+//请求获取随机名
+message ReqRandName{
+	int32 sex = 1;//0男，1女
+}
+//响应获取随机名结果
+message AckRandName{
+	string names = 1;
+}
+
+//请求创建角色
+message ReqCreateRole{
+	string nickName = 1;    //昵称
+	string inputName = 2;	//玩家输入账号
+}
+//响应创建角色结果
+message AckCreateRole{
+	int32 code = 1;
+}
+
+//响应进入游戏消息
+message AckEnterGame{}
+
+//请求断线重连
+message ReqReLogin{
+    string userName=1;
+	int32 channel = 2;
+	string sessionKey=3;
+	int32 recvSequenceNo = 4;	//客户端收到的服务器流水号
+	int32 serverId = 5;		//登陆时所选游戏服id
+	string version = 6;		//版本号
+}
+//响应重连结果
+message AckReLogin{
+    int32 code = 1;
+	int32 recvSequenceNo = 2;	//服务器收到的客户端流水号
+}
+
+//通知客户端已经断开连接,要退出游戏,不能触发重连
+message AckDisconnect{
+	int32 code = 1;	//提示信息
+}
+
+//请求心跳
+message ReqHeart{
+    int32 recvSequenceNo = 1;	//客户端收到的服务器流水号
+}
+//响应心跳
+message AckHeart{
+    int32 recvSequenceNo = 1;	//服务器收到的客户端流水号
+}

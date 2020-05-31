@@ -1,0 +1,76 @@
+syntax = "proto3"; // proto3 必须加此注解
+package Protocol;
+option optimize_for = LITE_RUNTIME;
+option java_package = "com.kepe.dragon.data.proto";
+option java_outer_classname = "PBBag";
+option java_multiple_files = true;
+
+
+//属性信息
+message AttrInfo{
+     int32 configId = 1;//属性,攻击,防御等
+	 int32 attrValue = 2;//属性值
+}
+
+//普通物品详细信息
+message ItemInfo{
+	int64 guid = 1;					//普通道具唯一id	
+	int32 configId = 2;				//普通道具配置id
+	int32 num = 3;					//普通道具数量
+	repeated AttrInfo attrs = 4;	//属性列表
+	repeated int32 skills = 5;		//技能列表
+	int32 equipped = 6;	            //是否已被穿戴0否1是
+}
+
+//物品简单信息
+//message ItemProfile{
+//	int32 configId = 1;				//普通道具配置id
+//	int32 num = 2;					//普通道具数量
+//}
+
+//请求背包物品
+//message ReqUpdateBagList{
+//}
+
+//服务器推送背包所有道具信息
+message AckBagList{
+	repeated ItemInfo bags = 1;//物品列表
+}
+
+//服务器推送更细指定道具信息
+message AckUpdateBagList{
+	repeated ItemInfo bags = 1;//物品列表
+}
+
+//服务器删除道具
+message AckDeleteBagList{
+	repeated int64 itemIds = 1;//物品id列表
+}
+
+//请求操作物品
+message ReqOperateItem{
+	int64 itemId = 1;//操作物品id
+	int32 opType = 2;//操作类型,1：使用,2：来源;3:合成,4:分解(出售)
+	int32 num = 3;   //数量
+}
+
+//返回操作物品
+message AckOperateItem{
+	int32 code = 1; //错误码
+}
+
+message AckRewards{
+	int32 type = 1;//1:显示物品,2:显示文字
+	repeated ItemInfo rewards = 2;//奖励列表
+}
+
+
+//购买次数
+message ReqBuyCount{
+    int32 type = 1;		//购买类型,客户端不能选择购买次数
+}
+
+message AckBuyCount{
+    int32 code=1;		//错误码
+}
+
