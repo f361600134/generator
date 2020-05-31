@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import com.fatiny.core.param.StringUtils;
+import com.fatiny.util.StringUtils;
 
 /**
  * 封装一个实体名, 以及属性信息

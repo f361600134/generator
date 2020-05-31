@@ -5,6 +5,8 @@ import org.apache.commons.collections4.Get;
 public class StringUtils {
 
 	private final static String UNDERLINE = "_";
+	
+	
 
 	/**
 	 * 将字符串首字符小写

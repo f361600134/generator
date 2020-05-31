@@ -14,6 +14,7 @@ import java.util.Map;
 import org.apache.commons.beanutils.ConvertUtils;
 
 import com.fatiny.core.param.annotation.Value;
+import com.fatiny.util.StringUtils;
 import com.google.common.collect.Multimap;
 
 public enum ParamEnum {
